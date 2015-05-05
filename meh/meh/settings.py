@@ -1,5 +1,6 @@
 # Django settings for meh project.
 import os.path
+import sys
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -160,3 +161,10 @@ LOGGING = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# Celery config
+BROKER_URL = 'redis://localhost:6379/0'
+
+if "worker" in sys.argv:
+    DEBUG = False
