@@ -10,7 +10,7 @@ THUMBNAIL_SIZES = [
 
 
 class Post(models.Model):
-    author = models.OneToOneField(settings.AUTH_USER_MODEL)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
     created = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
     image = models.ImageField(upload_to="posts",
