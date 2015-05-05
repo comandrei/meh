@@ -1,6 +1,7 @@
 import os.path
 import logging
 
+from django.core.mail import send_mail
 from PIL import Image
 
 logger = logging.getLogger(__name__)
@@ -14,3 +15,7 @@ def generate_thumbnail(image_path, size):
     im.thumbnail(size)
     filename = "{}.thumbnail.{}x{}{}".format(file, width, height, ext)
     im.save(filename, "JPEG")
+
+
+def send_email(to, from_email, subject, text):
+    send_mail(subject, text, from_email, [to])

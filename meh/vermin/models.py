@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-from .utils import generate_thumbnail
+from .utils import generate_thumbnail, send_email
 
 THUMBNAIL_SIZES = [
     (120, 120),
@@ -26,11 +26,27 @@ class Post(models.Model):
 
 class Meh(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    author = models.OneToOneField(settings.AUTH_USER_MODEL)
-    post = models.OneToOneField(Post)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    post = models.ForeignKey(Post)
+
+    def save(self, *args, **kwargs):
+        meh = super(Meh, self).save(*args, **kwargs)
+        send_email(to=self.post.author.email,
+                   from_email=self.author.email,
+                   subject="{} mehed your your post {}".format(self.author, self.post),
+                   text="trololo")
+        return meh
 
 
 class Eh(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    author = models.OneToOneField(settings.AUTH_USER_MODEL)
-    post = models.OneToOneField(Post)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    post = models.ForeignKey(Post)
+
+    def save(self, *args, **kwargs):
+        eh = super(Eh, self).save(*args, **kwargs)
+        send_email(to=self.post.author.email,
+                   from_email=self.author.email,
+                   subject="{} ehed your your post {}".format(self.author, self.post),
+                   text="trololololo")
+        return eh
