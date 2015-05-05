@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-from .utils import generate_thumbnail, send_email
+from .tasks import generate_thumbnail, send_email
 
 THUMBNAIL_SIZES = [
     (120, 120),
