@@ -2,11 +2,13 @@ import os.path
 import logging
 
 from django.core.mail import send_mail
+from celery import shared_task
 from PIL import Image
 
 logger = logging.getLogger(__name__)
 
 
+@shared_task
 def generate_thumbnail(image_path, size):
     width, height = size
     logger.info("Generating a {}x{} thumbnail for {}".format(width, height, image_path))
@@ -17,5 +19,6 @@ def generate_thumbnail(image_path, size):
     im.save(filename, "JPEG")
 
 
+@shared_task
 def send_email(to, from_email, subject, text):
     send_mail(subject, text, from_email, [to])
