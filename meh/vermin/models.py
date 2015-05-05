@@ -20,7 +20,7 @@ class Post(models.Model):
         post = super(Post, self).save(*args, **kwargs)
         if self.image:
             for size in THUMBNAIL_SIZES:
-                generate_thumbnail(self.image.path, size)
+                generate_thumbnail.delay(self.image.path, size)
         return post
 
 
@@ -31,10 +31,10 @@ class Meh(models.Model):
 
     def save(self, *args, **kwargs):
         meh = super(Meh, self).save(*args, **kwargs)
-        send_email(to=self.post.author.email,
-                   from_email=self.author.email,
-                   subject="{} mehed your your post {}".format(self.author, self.post),
-                   text="trololo")
+        send_email.delay(to=self.post.author.email,
+                         from_email=self.author.email,
+                         subject="{} mehed your your post {}".format(self.author, self.post),
+                         text="trololo")
         return meh
 
 
@@ -45,8 +45,8 @@ class Eh(models.Model):
 
     def save(self, *args, **kwargs):
         eh = super(Eh, self).save(*args, **kwargs)
-        send_email(to=self.post.author.email,
-                   from_email=self.author.email,
-                   subject="{} ehed your your post {}".format(self.author, self.post),
-                   text="trololololo")
+        send_email.delay(to=self.post.author.email,
+                         from_email=self.author.email,
+                         subject="{} ehed your your post {}".format(self.author, self.post),
+                         text="trololololo")
         return eh
